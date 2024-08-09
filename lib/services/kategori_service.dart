@@ -26,10 +26,23 @@ class KategoriService {
       Uri.parse('$_baseUrl/kategori'),
       body: {'nama_kategori': namaKategori},
     );
-    if (reponse.statusCode == 201) {
-      return true;
-    } else {
-      return false;
-    }
+
+    return reponse.statusCode == 201;
+  }
+
+  Future<bool> updateKategori(int id, String namaKategori) async {
+    final reponse = await http.put(
+      Uri.parse('$_baseUrl/kategori/$id'),
+      body: {'nama_kategori': namaKategori},
+    );
+
+    return reponse.statusCode == 200;
+  }
+  Future<bool> deleteKategori(int id) async {
+    final reponse = await http.delete(
+      Uri.parse('$_baseUrl/kategori/$id'),
+    );
+
+    return reponse.statusCode == 200;
   }
 }

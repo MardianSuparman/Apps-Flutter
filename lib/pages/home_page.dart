@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/pages/kategori/list_page.dart';
+import 'package:myapp/pages/kategori/list_kategori_page.dart';
 import '../services/auth_service.dart';
 import 'auth/login_page.dart';
 

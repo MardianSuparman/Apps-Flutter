@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../models/kategori_model.dart';
 import '../../services/kategori_service.dart';
-import 'form_page.dart';
+import 'create_kategori_page.dart';
+import 'show_ketegori_page.dart'; //import halaman show kategori
+import 'update_kategori_page.dart'; //import halaman update kategori
 
 class KategoriPage extends StatefulWidget {
   @override
@@ -30,8 +32,23 @@ class _KategoriPageState extends State<KategoriPage> {
       context,
       MaterialPageRoute(builder: (context) => FormKategoriPage()),
     );
+
     if (result == true) {
       _fetchKategori();
+    }
+  }
+
+  void _deleteKategori(int id) async {
+    bool delete = await _kategoriService.deleteKategori(id);
+    if (delete) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Kategori berhasil dihapus!')),
+      );
+      _fetchKategori();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal menghapus Kategori!')),
+      );
     }
   }
 
@@ -79,6 +96,47 @@ class _KategoriPageState extends State<KategoriPage> {
                         ),
                       ),
                       SizedBox(height: 5),
+                      Text(kategori.slug.toString()),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.remove_red_eye),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ShowKetegoriPage(kategori: kategori),
+                                ),
+                              );
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditKategoriPage(kategori: kategori),
+                                ),
+                              ).then((result) {
+                                if (result == true) {
+                                  _fetchKategori();
+                                }
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _deleteKategori(kategori.id!);
+                            },
+                          )
+                        ],
+                      )
                     ],
                   ),
                 );
